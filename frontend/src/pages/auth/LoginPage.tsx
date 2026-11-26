@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuth'
 import type { FormEvent } from 'react'
 import {
   Mail,
@@ -17,6 +19,12 @@ import { Button } from '../../components/ui/Button'
 import { Input } from '../../components/ui/Input'
 
 export function LoginPage() {
+  const { signIn } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const success = location.state?.success as string | undefined
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -32,9 +40,22 @@ export function LoginPage() {
       return
     }
 
-    setMessage(
-      'Protótipo visual: a autenticação ainda será integrada.'
-    )
+    try {
+      const user = signIn(email, password)
+
+      navigate(
+        user.role === 'ADMIN'
+          ? '/admin'
+          : '/tecnico',
+        { replace: true },
+      )
+    } catch (error) {
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : 'Não foi possível autenticar.',
+      )
+    }
   }
 
   return (
@@ -190,12 +211,20 @@ export function LoginPage() {
               required
             />
 
+            {success && !message && (
+              <div role="status"
+                className="rounded-lg bg-green-50 p-3
+                  text-sm text-success">
+                {success}
+              </div>
+            )}
+
             {message && (
               <div
-                role="status"
+                role="alert"
                 className="flex items-center gap-2
-                  rounded-lg bg-primary-soft p-3
-                  text-sm text-primary"
+                  rounded-lg bg-red-50 p-3
+                  text-sm text-danger"
               >
                 <CircleAlert size={18} />
                 {message}
@@ -215,9 +244,12 @@ export function LoginPage() {
 
           <p className="text-center text-sm text-muted">
             Primeiro acesso?{' '}
-            <span className="font-semibold text-primary">
+            <Link
+              to="/cadastro-empresa"
+              className="font-semibold text-primary hover:underline"
+            >
               Cadastrar empresa
-            </span>
+            </Link>
           </p>
 
           <p className="mt-10 text-center text-xs text-gray-400">
