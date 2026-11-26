@@ -1,3 +1,4 @@
+import { createMockOperations } from '../mocks/orders'
 import type {
   Order,
   OrderItem,
@@ -13,15 +14,52 @@ interface Operations {
 const KEY = 'fieldops:operations'
 
 export function readOperations(): Operations {
-  const data = localStorage.getItem(KEY)
+  const raw = localStorage.getItem(KEY)
+
+  const data: Operations = raw
+    ? JSON.parse(raw) as Operations
+    : { orders: [], items: [], reservations: [] }
+
+  const seedKey = 'fieldops:demo-orders-v1'
+
+  if (!localStorage.getItem(seedKey)) {
+    const demo = createMockOperations()
+
+    const existingIds = new Set(
+      data.orders.map((order) => order.id),
+    )
+
+    const newOrders = demo.orders.filter(
+      (order) => !existingIds.has(order.id),
+    )
+
+    const newIds = new Set(
+      newOrders.map((order) => order.id),
+    )
+
+    const merged: Operations = {
+      orders: [...data.orders, ...newOrders],
+      items: [
+        ...data.items,
+        ...demo.items.filter(
+          (item) => newIds.has(item.orderId),
+        ),
+      ],
+      reservations: [
+        ...data.reservations,
+        ...demo.reservations.filter(
+          (item) => newIds.has(item.orderId),
+        ),
+      ],
+    }
+
+    localStorage.setItem(KEY, JSON.stringify(merged))
+    localStorage.setItem(seedKey, 'true')
+
+    return merged
+  }
 
   return data
-    ? JSON.parse(data) as Operations
-    : {
-        orders: [],
-        items: [],
-        reservations: [],
-      }
 }
 
 export function saveOperations(data: Operations) {

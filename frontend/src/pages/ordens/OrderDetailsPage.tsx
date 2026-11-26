@@ -1,6 +1,7 @@
+import { useFlashSuccess } from '../../hooks/useFlashSuccess'
 import { useState } from 'react'
 import {
-  Link, useLocation, useNavigate, useParams,
+  Link, useNavigate, useParams,
 } from 'react-router-dom'
 import {
   ArrowLeft, ClipboardList, MapPin, UserRound,
@@ -26,14 +27,14 @@ import type { OrderDetails } from '../../types/order'
 
 function OrderView({ initial }: { initial: OrderDetails }) {
   const { user } = useAuth()
-  const location = useLocation()
+  const flashSuccess = useFlashSuccess()
   const navigate = useNavigate()
 
   const [order, setOrder] = useState(initial)
   const [confirming, setConfirming] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState<string>(
-    location.state?.success ?? '',
+    flashSuccess,
   )
 
   const admin = user?.role === 'ADMIN'

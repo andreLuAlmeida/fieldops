@@ -1,5 +1,6 @@
+import { useFlashSuccess } from '../../hooks/useFlashSuccess'
 import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Wrench, Plus, Search, Eye, Clock } from 'lucide-react'
 
 import { Button } from '../../components/ui/Button'
@@ -14,7 +15,7 @@ import {
 
 export function ServiceListPage() {
   const navigate = useNavigate()
-  const location = useLocation()
+  const flashSuccess = useFlashSuccess()
 
   const [services] = useState(getServices)
   const [search, setSearch] = useState('')
@@ -43,7 +44,7 @@ export function ServiceListPage() {
       />
 
       <Feedback
-        message={location.state?.success ?? ''}
+        message={flashSuccess}
         type="success"
       />
 

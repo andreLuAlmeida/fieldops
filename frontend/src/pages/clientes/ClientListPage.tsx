@@ -1,5 +1,6 @@
+import { useFlashSuccess } from '../../hooks/useFlashSuccess'
 import { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import {
   Users,
@@ -27,7 +28,7 @@ import type { Client } from '../../types/client'
 
 export function ClientListPage() {
   const navigate = useNavigate()
-  const location = useLocation()
+  const flashSuccess = useFlashSuccess()
 
   const [clients, setClients] = useState(getClients)
   const [search, setSearch] = useState('')
@@ -36,7 +37,7 @@ export function ClientListPage() {
   const [selected, setSelected] = useState<Client | null>(null)
 
   const [success, setSuccess] = useState<string>(
-    location.state?.success ?? '',
+    flashSuccess,
   )
 
   const [error, setError] = useState('')

@@ -1,5 +1,6 @@
+import { useFlashSuccess } from '../../hooks/useFlashSuccess'
 import { useState } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import type { FormEvent } from 'react'
 import {
@@ -21,9 +22,9 @@ import { Input } from '../../components/ui/Input'
 export function LoginPage() {
   const { signIn } = useAuth()
   const navigate = useNavigate()
-  const location = useLocation()
+  const flashSuccess = useFlashSuccess()
 
-  const success = location.state?.success as string | undefined
+  const success = flashSuccess
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

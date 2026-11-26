@@ -1,5 +1,6 @@
+import { useFlashSuccess } from '../../hooks/useFlashSuccess'
 import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {
   ClipboardList, Search, Plus, Eye, CalendarClock,
 } from 'lucide-react'
@@ -18,7 +19,7 @@ import {
 export function OrderListPage() {
   const { user } = useAuth()
   const navigate = useNavigate()
-  const location = useLocation()
+  const flashSuccess = useFlashSuccess()
 
   const admin = user?.role === 'ADMIN'
   const base = admin ? '/admin/ordens' : '/tecnico/ordens'
@@ -68,7 +69,7 @@ export function OrderListPage() {
       />
 
       <Feedback
-        message={location.state?.success ?? ''}
+        message={flashSuccess}
         type="success"
       />
 

@@ -1,5 +1,6 @@
+import { useFlashSuccess } from '../../hooks/useFlashSuccess'
 import { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {
   HardHat, Plus, Search, Eye,
   CircleCheck, CircleX,
@@ -15,7 +16,7 @@ import { getUsers } from '../../services/authService'
 
 export function TechnicianListPage() {
   const navigate = useNavigate()
-  const location = useLocation()
+  const flashSuccess = useFlashSuccess()
 
   const [technicians] = useState(getTechnicians)
   const [search, setSearch] = useState('')
@@ -55,7 +56,7 @@ export function TechnicianListPage() {
       />
 
       <Feedback
-        message={location.state?.success ?? ''}
+        message={flashSuccess}
         type="success"
       />
 
