@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #7F00B2;
+  --color-primary-hover: #8E22BB;
+  --color-primary-light: #AB49CC;
+  --color-primary-soft: #F1DDF9;
+
+  --color-secondary: #D4D571;
+  --color-accent: #FDFD96;
+
+  --color-background: #F7F7F9;
+  --color-surface: #FFFFFF;
+  --color-sidebar: #191919;
+
+  --color-foreground: #191919;
+  --color-muted: #666666;
+  --color-border: #E5E5E5;
+
+  --color-success: #15803D;
+  --color-danger: #DC2626;
+  --color-warning: #B45309;
+
+  --font-sans: Inter, Arial, sans-serif;
+}
+
+:root {
+  font-family: var(--font-sans);
+  color: var(--color-foreground);
+  background: var(--color-background);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-foreground);
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}
