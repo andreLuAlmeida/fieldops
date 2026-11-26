@@ -13,6 +13,12 @@ import { AppLayout } from './layouts/AppLayout'
 import { LoginPage } from './pages/auth/LoginPage'
 import { RegisterCompanyPage } from './pages/auth/RegisterCompanyPage'
 import { Dashboard } from './components/common/Dashboard'
+import { TechnicianListPage } from './pages/tecnicos/TechnicianListPage'
+import { TechnicianFormPage } from './pages/tecnicos/TechnicianFormPage'
+import { TechnicianDetailsPage } from './pages/tecnicos/TechnicianDetailsPage'
+import { ServiceListPage } from './pages/servicos/ServiceListPage'
+import { ServiceFormPage } from './pages/servicos/ServiceFormPage'
+import { ServiceDetailsPage } from './pages/servicos/ServiceDetailsPage'
 import { ProfilePage } from './pages/conta/ProfilePage'
 import { ChangePasswordPage } from './pages/conta/ChangePasswordPage'
 import { ClientListPage } from './pages/clientes/ClientListPage'
@@ -88,11 +94,27 @@ export default function App() {
               />
 
               <Route path="tecnicos"
-                element={<ModulePlaceholder title="Técnicos" />}
+                element={<TechnicianListPage />}
+              />
+
+              <Route path="tecnicos/novo"
+                element={<TechnicianFormPage />}
+              />
+
+              <Route path="tecnicos/:id"
+                element={<TechnicianDetailsPage />}
               />
 
               <Route path="servicos"
-                element={<ModulePlaceholder title="Serviços" />}
+                element={<ServiceListPage />}
+              />
+
+              <Route path="servicos/novo"
+                element={<ServiceFormPage />}
+              />
+
+              <Route path="servicos/:id"
+                element={<ServiceDetailsPage />}
               />
 
               <Route path="ordens"
