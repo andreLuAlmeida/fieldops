@@ -13,6 +13,11 @@ import { AppLayout } from './layouts/AppLayout'
 import { LoginPage } from './pages/auth/LoginPage'
 import { RegisterCompanyPage } from './pages/auth/RegisterCompanyPage'
 import { Dashboard } from './components/common/Dashboard'
+import { ProfilePage } from './pages/conta/ProfilePage'
+import { ChangePasswordPage } from './pages/conta/ChangePasswordPage'
+import { ClientListPage } from './pages/clientes/ClientListPage'
+import { ClientFormPage } from './pages/clientes/ClientFormPage'
+import { ClientDetailsPage } from './pages/clientes/ClientDetailsPage'
 
 function ModulePlaceholder({ title }: { title: string }) {
   return (
@@ -67,7 +72,19 @@ export default function App() {
               <Route index element={<Dashboard />} />
 
               <Route path="clientes"
-                element={<ModulePlaceholder title="Clientes" />}
+                element={<ClientListPage />}
+              />
+
+              <Route path="clientes/novo"
+                element={<ClientFormPage />}
+              />
+
+              <Route path="clientes/:id"
+                element={<ClientDetailsPage />}
+              />
+
+              <Route path="clientes/:id/editar"
+                element={<ClientFormPage />}
               />
 
               <Route path="tecnicos"
@@ -109,11 +126,11 @@ export default function App() {
             <Route element={<AppLayout />}>
 
               <Route path="/conta"
-                element={<ModulePlaceholder title="Minha conta" />}
+                element={<ProfilePage />}
               />
 
               <Route path="/conta/senha"
-                element={<ModulePlaceholder title="Alterar senha" />}
+                element={<ChangePasswordPage />}
               />
 
             </Route>
