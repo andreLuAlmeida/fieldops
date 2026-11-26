@@ -1,3 +1,4 @@
+import { hasClientOrders } from './orderStorage'
 import { mockClients } from '../mocks/clients'
 import type { Client, ClientInput } from '../types/client'
 import { getSession } from './authService'
@@ -140,8 +141,11 @@ export function updateClient(
 export function deleteClient(id: string) {
   const client = getClient(id)
 
-  // A restrição de vínculo com ordens de serviço será
-  // integrada quando o módulo de ordens for implementado.
+  if (hasClientOrders(client.id)) {
+    throw new Error(
+      'Não é possível excluir um cliente vinculado a ordens de serviço.',
+    )
+  }
 
   saveClients(
     readClients().filter((item) => item.id !== client.id),

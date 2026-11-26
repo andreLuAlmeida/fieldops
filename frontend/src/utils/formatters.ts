@@ -15,3 +15,20 @@ export function formatDuration(minutes: number): string {
     ? `${hours}h ${remainder}min`
     : `${hours}h`
 }
+
+export function formatDateTime(value: string): string {
+  return new Intl.DateTimeFormat('pt-BR', {
+    dateStyle: 'short',
+    timeStyle: 'short',
+  }).format(new Date(value))
+}
+
+export function toLocalDateTime(value: string): string {
+  const date = new Date(value)
+
+  const adjusted = new Date(
+    date.getTime() - date.getTimezoneOffset() * 60000,
+  )
+
+  return adjusted.toISOString().slice(0, 16)
+}

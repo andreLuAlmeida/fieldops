@@ -5,7 +5,7 @@ import {
   Navigate,
 } from 'react-router-dom'
 
-import { Construction } from 'lucide-react'
+
 
 import { AuthProvider } from './contexts/AuthProvider'
 import { ProtectedRoute } from './routes/ProtectedRoute'
@@ -13,6 +13,9 @@ import { AppLayout } from './layouts/AppLayout'
 import { LoginPage } from './pages/auth/LoginPage'
 import { RegisterCompanyPage } from './pages/auth/RegisterCompanyPage'
 import { Dashboard } from './components/common/Dashboard'
+import { OrderListPage } from './pages/ordens/OrderListPage'
+import { OrderFormPage } from './pages/ordens/OrderFormPage'
+import { OrderDetailsPage } from './pages/ordens/OrderDetailsPage'
 import { TechnicianListPage } from './pages/tecnicos/TechnicianListPage'
 import { TechnicianFormPage } from './pages/tecnicos/TechnicianFormPage'
 import { TechnicianDetailsPage } from './pages/tecnicos/TechnicianDetailsPage'
@@ -24,33 +27,6 @@ import { ChangePasswordPage } from './pages/conta/ChangePasswordPage'
 import { ClientListPage } from './pages/clientes/ClientListPage'
 import { ClientFormPage } from './pages/clientes/ClientFormPage'
 import { ClientDetailsPage } from './pages/clientes/ClientDetailsPage'
-
-function ModulePlaceholder({ title }: { title: string }) {
-  return (
-    <section className="space-y-5">
-      <h1 className="text-3xl font-bold">{title}</h1>
-
-      <div className="flex flex-col items-center
-        rounded-xl border border-border bg-white
-        p-16 text-center">
-
-        <div className="rounded-xl bg-primary-soft
-          p-4 text-primary">
-          <Construction size={32} />
-        </div>
-
-        <h2 className="mt-5 text-lg font-semibold">
-          Módulo em desenvolvimento
-        </h2>
-
-        <p className="mt-2 text-sm text-muted">
-          Esta interface será implementada na próxima etapa.
-        </p>
-
-      </div>
-    </section>
-  )
-}
 
 export default function App() {
   return (
@@ -118,11 +94,19 @@ export default function App() {
               />
 
               <Route path="ordens"
-                element={<ModulePlaceholder title="Ordens de serviço" />}
+                element={<OrderListPage />}
+              />
+
+              <Route path="ordens/:id"
+                element={<OrderDetailsPage />}
+              />
+
+              <Route path="ordens/:id/editar"
+                element={<OrderFormPage />}
               />
 
               <Route path="ordens/novo"
-                element={<ModulePlaceholder title="Nova ordem de serviço" />}
+                element={<OrderFormPage />}
               />
 
             </Route>
@@ -136,7 +120,11 @@ export default function App() {
               <Route index element={<Dashboard />} />
 
               <Route path="ordens"
-                element={<ModulePlaceholder title="Meus atendimentos" />}
+                element={<OrderListPage />}
+              />
+
+              <Route path="ordens/:id"
+                element={<OrderDetailsPage />}
               />
 
             </Route>

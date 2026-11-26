@@ -13,11 +13,27 @@ import {
 } from 'lucide-react'
 
 import { useAuth } from '../../hooks/useAuth'
+import { getOrders } from '../../services/orderService'
+import { StatusBadge } from '../ui/StatusBadge'
+import { formatDateTime } from '../../utils/formatters'
+
 
 export function Dashboard() {
   const { user } = useAuth()
 
   const isAdmin = user?.role === 'ADMIN'
+
+  const orders = getOrders()
+  const base = isAdmin ? '/admin/ordens' : '/tecnico/ordens'
+
+  const recent = isAdmin
+    ? orders.slice(0, 5)
+    : orders
+        .filter((order) => order.status !== 'Concluída')
+        .sort((a, b) =>
+          a.reservation.start.localeCompare(b.reservation.start),
+        )
+        .slice(0, 5)
 
   const indicators = [
     {
@@ -117,7 +133,17 @@ export function Dashboard() {
 
               <div>
                 <p className="text-sm text-muted">{label}</p>
-                <p className="mt-1 text-3xl font-bold">0</p>
+                <p className="mt-1 text-3xl font-bold">
+                  {orders.filter((order) =>
+                    order.status === (
+                      label === 'Agendadas'
+                        ? 'Agendada'
+                        : label === 'Concluídas'
+                          ? 'Concluída'
+                          : 'Em andamento'
+                    ),
+                  ).length}
+                </p>
               </div>
 
             </div>
@@ -151,6 +177,34 @@ export function Dashboard() {
 
         </div>
 
+        {recent.length ? (
+          <div className="mt-5 divide-y divide-border">
+            {recent.map((order) => (
+              <Link
+                key={order.id}
+                to={`${base}/${order.id}`}
+                className="flex flex-wrap items-center
+                  justify-between gap-3 py-4 hover:text-primary"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="rounded-lg bg-primary-soft p-3 text-primary">
+                    <ClipboardList size={20} />
+                  </div>
+                  <div>
+                    <p className="font-medium">{order.clientName}</p>
+                    <p className="text-xs text-muted">
+                      OS-{order.id.slice(0, 8).toUpperCase()}
+                      {' · '}
+                      {formatDateTime(order.reservation.start)}
+                    </p>
+                  </div>
+                </div>
+                <StatusBadge status={order.status} />
+                <ArrowRight size={18} className="text-primary" />
+              </Link>
+            ))}
+          </div>
+        ) : (
         <div className="flex flex-col items-center
           py-12 text-center">
 
@@ -168,6 +222,7 @@ export function Dashboard() {
           </p>
 
         </div>
+        )}
       </section>
 
       {isAdmin && (
